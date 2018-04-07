@@ -1,0 +1,52 @@
+//
+// Created by Artem on 3/16/2018.
+//
+#pragma  once
+#ifndef DRAWPROG_WOBJECT_H
+#define DRAWPROG_WOBJECT_H
+
+#include <iostream>
+#include "windows.h"
+#include "IDLIST.h"
+
+class WObject {
+private:
+    HDC hdc;
+    HPEN pen;
+    PAINTSTRUCT ps;
+    HBRUSH brush;
+    byte drawTool;  // Select draw object
+
+private:
+    CHOOSECOLOR palette;
+    DWORD rgbCurrent;
+    COLORREF acrCustClr[16];
+protected:
+    HWND hMainWindow;
+    WNDCLASSEX wc;
+    HMENU menu_Handler;
+
+public:
+    WObject(LPCTSTR windowName, HINSTANCE hInst, int nCmdShow, LRESULT (WINAPI *pWndProc)(HWND, UINT, WPARAM, LPARAM),
+    LPCTSTR menuName = NULL, int x = CW_USEDEFAULT, int y = 0, int width = CW_USEDEFAULT, int height = 0,
+    UINT classStyle = CS_HREDRAW | CS_VREDRAW, DWORD windowStyle = WS_OVERLAPPEDWINDOW, HWND hParent = NULL);
+    ~WObject();
+
+    // Methods
+    HWND getHWND();
+    HDC getHDC();
+    PAINTSTRUCT getPaintStruct(){
+        return this->ps;
+    }
+    void drawText(int x1, int y1, int x2, int y2, LPSTR text);
+
+    // Commands
+    void wmPaintEngine(int id);
+
+private:
+    void setupMenu();
+
+};
+
+
+#endif //DRAWPROG_WOBJECT_H
